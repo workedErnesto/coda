@@ -1,7 +1,5 @@
 name: coda
 description: "A new Flutter project."
-# The following line prevents the package from being accidentally published to
-# pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
@@ -34,6 +32,8 @@ dependencies:
   cupertino_icons: ^1.0.8
   auto_route: ^11.1.0
   get_it: ^9.2.1
+  dio: ^5.9.1
+  flutter_dotenv: ^6.0.0
 
 dev_dependencies:
   flutter_test:
@@ -47,7 +47,7 @@ flutter:
   uses-material-design: true
   
   assets:
-    - assets/img/
+    - assets/
 
   fonts:
     - family: Muller
