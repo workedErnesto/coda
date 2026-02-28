@@ -9,7 +9,7 @@ class TracksRemoteDataSource {
   final Dio _dio;
 
   Future<List<TrackModel>> fetchPopularTracks() async {
-    await dotenv.load(fileName: "dotenv.env");
+    await dotenv.load(fileName: ".env");
     final token = dotenv.env['GENIUS_CLIENT_TOKEN'];
     final response = await _dio.get(
       'https://api.genius.com/search',
@@ -24,9 +24,6 @@ class TracksRemoteDataSource {
         },
       ),
     );
-
-    print(response.data);
-    print(response.data.runtimeType);
     final Map<String, dynamic> data = response.data is String
         ? jsonDecode(response.data)
         : response.data;
@@ -35,7 +32,6 @@ class TracksRemoteDataSource {
     var list = hits.map((hit) {
       return TrackModel.fromJson(hit['result']);
     }).toList();
-    print(list[0]);
-    return [];
+    return list;
   }
 }

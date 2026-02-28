@@ -13,6 +13,7 @@ TrackModel _$TrackModelFromJson(Map<String, dynamic> json) => TrackModel(
   posterUrl: json['song_art_image_url'] as String,
 );
 
+// ignore: unused_element
 Map<String, dynamic> _$TrackModelToJson(TrackModel instance) =>
     <String, dynamic>{
       'id': instance.id,
