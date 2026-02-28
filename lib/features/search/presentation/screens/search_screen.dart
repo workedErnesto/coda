@@ -1,4 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:coda/features/search/data/datasources/tracks_remote_data_source.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:coda/features/search/presentation/widgets/widgets.dart';
 
@@ -16,6 +18,14 @@ class SearchScreen extends StatelessWidget {
         child: CustomScrollView(
           slivers: [
             BaseAppBar(title: 'Поиск', bottom: SearchField()),
+            SliverToBoxAdapter(
+              child: IconButton(
+                onPressed: () {
+                  TracksRemoteDataSource(dio: Dio()).fetchPopularTracks();
+                },
+                icon: Icon(Icons.add),
+              ),
+            ),
             PopularTracksText(),
             TrackList(),
           ],
