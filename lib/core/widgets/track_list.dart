@@ -1,14 +1,17 @@
+import 'package:coda/core/domain/entity/track_entity.dart';
 import 'package:coda/core/widgets/widgets.dart';
 import 'package:coda/features/search/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class TrackList extends StatelessWidget {
-  const TrackList({super.key});
+  const TrackList({super.key, required this.trackList});
+  final List<TrackEntity> trackList;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return SliverList.separated(
+      itemCount: trackList.length,
       itemBuilder: (context, index) {
         return BaseContainer(
           child: OutlinedButton(
@@ -23,7 +26,7 @@ class TrackList extends StatelessWidget {
               ),
               backgroundColor: theme.colorScheme.onPrimary,
             ),
-            child: TrackItem(),
+            child: TrackItem(track: trackList[index]),
           ),
         );
       },

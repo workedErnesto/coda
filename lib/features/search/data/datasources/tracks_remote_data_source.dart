@@ -32,6 +32,7 @@ class TracksRemoteDataSource {
     var list = hits.map((hit) {
       return TrackModel.fromJson(hit['result']);
     }).toList();
+
     return list;
   }
 }

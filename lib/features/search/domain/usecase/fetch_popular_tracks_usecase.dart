@@ -5,7 +5,7 @@ class FetchPopularTracksUseCase {
   FetchPopularTracksUseCase({required this.repository});
   final ISearchRepository repository;
 
-  Future<List<TrackEntity>> call() async {
-    return await repository.fetchPopularTracks();
-  }
+  Future<List<TrackEntity>> call() async =>
+     await repository.fetchPopularTracks();
+  
 }

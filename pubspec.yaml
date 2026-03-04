@@ -36,6 +36,7 @@ dependencies:
   flutter_dotenv: ^6.0.0
   equatable: ^2.0.8
   json_annotation: ^4.11.0
+  flutter_bloc: ^9.1.1
 
 dev_dependencies:
   flutter_test:

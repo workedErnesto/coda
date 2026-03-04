@@ -1,3 +1,4 @@
+import 'package:coda/core/domain/entity/track_entity.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -26,6 +27,14 @@ class TrackModel extends Equatable {
 
   factory TrackModel.fromJson(Map<String, dynamic> json) =>
       _$TrackModelFromJson(json);
+
+  TrackEntity toEntity() => TrackEntity(
+    id: id,
+    title: title,
+    author: author,
+    posterUrl: posterUrl,
+    originalLyrics: ''
+  );
 
   @override
   List<Object?> get props => [id, title, author, posterUrl];

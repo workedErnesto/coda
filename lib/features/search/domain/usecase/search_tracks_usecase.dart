@@ -6,7 +6,7 @@ class SearchTracksUseCase {
   final ISearchRepository repository;
   final String query;
 
-  Future<List<TrackEntity>> call() async {
-    return await repository.searchTracks(query);
-  }
+  Future<List<TrackEntity>> call() async =>
+     await repository.searchTracks(query);
+  
 }
