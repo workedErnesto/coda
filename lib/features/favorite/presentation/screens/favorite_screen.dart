@@ -18,7 +18,7 @@ class FavoriteScreen extends StatelessWidget {
         child: CustomScrollView(
           slivers: [
             BaseAppBar(title: "Избранное"),
-            [].isEmpty ? StubFavorite() : TrackList(),
+            [].isEmpty ? StubFavorite() : TrackList(trackList: []),
           ],
         ),
       ),

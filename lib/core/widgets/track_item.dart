@@ -1,9 +1,9 @@
-
-
+import 'package:coda/core/domain/entity/track_entity.dart';
 import 'package:flutter/material.dart';
 
 class TrackItem extends StatelessWidget {
-  const TrackItem({super.key});
+  const TrackItem({super.key, required this.track});
+  final TrackEntity track;
 
   @override
   Widget build(BuildContext context) {
@@ -26,14 +26,14 @@ class TrackItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Название",
+                  track.title,
                   style: theme.textTheme.bodyLarge?.copyWith(
                     fontWeight: FontWeight.w600,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Text(
-                  "Автор",
+                  track.author,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w400,
                     color: theme.hintColor,
