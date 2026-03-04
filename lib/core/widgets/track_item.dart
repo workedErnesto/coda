@@ -13,13 +13,9 @@ class TrackItem extends StatelessWidget {
       children: [
         Row(
           children: [
-            Container(
-              width: 64,
-              height: 64,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                color: theme.hintColor,
-              ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Image.network(track.posterUrl, width: 64, height: 64),
             ),
             SizedBox(width: 16),
             Column(

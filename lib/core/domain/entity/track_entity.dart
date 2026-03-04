@@ -5,6 +5,7 @@ class TrackEntity {
   final String posterUrl;
   final String originalLyrics;
   final String? translatedLyrics;
+  bool? isFavorite = false;
 
   TrackEntity({
     required this.id,
@@ -13,5 +14,6 @@ class TrackEntity {
     required this.posterUrl,
     required this.originalLyrics,
     this.translatedLyrics,
+    this.isFavorite
   });
 }
