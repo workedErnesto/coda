@@ -1,4 +1,4 @@
-import 'package:coda/core/widgets/home/widgets/widgets.dart';
+import 'package:coda/features/home/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class CustomNavigationBar extends StatelessWidget {

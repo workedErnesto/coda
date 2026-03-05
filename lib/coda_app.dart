@@ -19,6 +19,7 @@ class _CodaAppState extends State<CodaApp> {
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeCubit, ThemeState>(
       builder: (context, state) {
+        context.read<ThemeCubit>().loadInitialTheme();
         bool isDark = state is ThemeDark;
         final mode = isDark ? ThemeMode.dark : ThemeMode.light;
         return MaterialApp.router(

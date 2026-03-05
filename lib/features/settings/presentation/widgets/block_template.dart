@@ -18,6 +18,7 @@ class BlockTemplate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     return SliverToBoxAdapter(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,7 +39,9 @@ class BlockTemplate extends StatelessWidget {
               onPressed: () {},
               style: OutlinedButton.styleFrom(
                 elevation: 0,
-                side: BorderSide(color: theme.hintColor.withOpacity(0.15)),
+                side: isDark
+                    ? BorderSide.none
+                    : BorderSide(color: theme.hintColor.withOpacity(0.15)),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
