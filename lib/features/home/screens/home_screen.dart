@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:coda/core/router/router.gr.dart';
-import 'package:coda/core/widgets/home/widgets/widgets.dart';
+import 'package:coda/features/home/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 @RoutePage()

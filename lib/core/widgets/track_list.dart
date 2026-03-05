@@ -10,6 +10,7 @@ class TrackList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     return SliverList.separated(
       itemCount: trackList.length,
       itemBuilder: (context, index) {
@@ -18,7 +19,9 @@ class TrackList extends StatelessWidget {
             onPressed: () {},
             style: OutlinedButton.styleFrom(
               elevation: 1,
-              side: BorderSide(color: theme.hintColor.withOpacity(0.15)),
+              side: isDark
+                  ? BorderSide.none
+                  : BorderSide(color: theme.hintColor.withOpacity(0.15)),
               padding: EdgeInsets.zero.copyWith(left: 12, right: 2),
               minimumSize: Size.fromHeight(88),
               shape: RoundedRectangleBorder(
