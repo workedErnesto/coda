@@ -1,5 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:coda/core/domain/entity/track_entity.dart';
-import 'package:coda/core/widgets/widgets.dart';
+import 'package:coda/core/presentation/widgets/widgets.dart';
+import 'package:coda/core/router/router.gr.dart';
 import 'package:coda/features/search/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +18,8 @@ class TrackList extends StatelessWidget {
       itemBuilder: (context, index) {
         return BaseContainer(
           child: OutlinedButton(
-            onPressed: () {},
+            onPressed: () =>
+                context.router.push(TrackDetailRoute(track: trackList[index])),
             style: OutlinedButton.styleFrom(
               elevation: 1,
               side: isDark

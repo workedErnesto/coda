@@ -6,13 +6,14 @@ class BaseContainer extends StatelessWidget {
     required this.child,
     this.color,
     this.borderColor,
-    this.padding,
+    this.padding, this.borderRadius,
   });
 
   final Widget child;
   final Color? color;
   final Color? borderColor;
   final EdgeInsets? padding;
+  final BorderRadius? borderRadius;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -21,7 +22,7 @@ class BaseContainer extends StatelessWidget {
       padding: padding,
       decoration: BoxDecoration(
         color: color ?? theme.colorScheme.onPrimary,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: borderRadius ?? BorderRadius.circular(12),
         border: isDark
             ? null
             : borderColor == null

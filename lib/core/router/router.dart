@@ -31,5 +31,11 @@ class AppRouter extends RootStackRouter {
         ),
       ],
     ),
+     CustomRoute(
+      transitionsBuilder: TransitionsBuilders.fadeIn,
+      duration: Duration(milliseconds: 150),
+      page: TrackDetailRoute.page,
+      path: '/track_detail',
+    ),
   ];
 }
