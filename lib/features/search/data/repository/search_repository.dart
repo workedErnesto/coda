@@ -2,7 +2,6 @@ import 'package:coda/core/domain/entity/track_entity.dart';
 import 'package:coda/features/search/data/datasources/i_genius_remote_data_source.dart';
 import 'package:coda/features/search/data/datasources/i_lyrics_remote_data_source.dart';
 import 'package:coda/features/search/domain/repository/i_search_repository.dart';
-import 'package:flutter/widgets.dart';
 
 class SearchRepository implements ISearchRepository {
   final IGeniusRemoteDataSource _remoteDataSource;
@@ -18,7 +17,6 @@ class SearchRepository implements ISearchRepository {
   Future<List<TrackEntity>> fetchPopularTracks() async {
     final models = await _remoteDataSource.fetchPopularTracks();
     final modelsWithLyrics = await _lyricsRemoteDataSource.fetchTracks(models);
-    debugPrint('Загружено треков: ${modelsWithLyrics.length}');
     return modelsWithLyrics.map((model) => model.toEntity()).toList();
   }
 

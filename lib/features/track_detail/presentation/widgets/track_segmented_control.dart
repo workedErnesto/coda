@@ -1,5 +1,7 @@
+import 'package:coda/features/track_detail/presentation/cubit/lyrics_type_cubit.dart';
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TrackSegmentedControl extends StatelessWidget {
   const TrackSegmentedControl({super.key});
@@ -7,10 +9,18 @@ class TrackSegmentedControl extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final type = context.watch<LyricsTypeCubit>().state.type;
+
+    TextStyle? style(LyricsType lyricsType) {
+      return theme.textTheme.bodyLarge?.copyWith(
+        fontWeight: type == lyricsType ? FontWeight.w800 : FontWeight.w500,
+      );
+    }
+
     return Center(
       child: CustomSlidingSegmentedControl(
         fixedWidth: 110,
-        initialValue: 0,
+        initialValue: LyricsType.original,
         innerPadding: EdgeInsets.all(4),
         padding: 12,
         decoration: BoxDecoration(
@@ -21,27 +31,21 @@ class TrackSegmentedControl extends StatelessWidget {
           color: theme.colorScheme.onPrimary,
           borderRadius: BorderRadius.circular(12),
         ),
+        duration: Duration(milliseconds: 300),
+        curve: Curves.fastOutSlowIn,
         children: {
-          0: Text(
+          LyricsType.original: Text(
             "Оригинал",
-            style: theme.textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w800,
-            ),
+            style: style(LyricsType.original),
           ),
-          1: Text(
+          LyricsType.translate: Text(
             "Перевод",
-            style: theme.textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
+            style: style(LyricsType.translate),
           ),
-          2: Text(
-            "Микс",
-            style: theme.textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+          LyricsType.mix: Text("Микс", style: style(LyricsType.mix)),
         },
-        onValueChanged: (value) {},
+        onValueChanged: (type) =>
+            context.read<LyricsTypeCubit>().changeType(type),
       ),
     );
   }

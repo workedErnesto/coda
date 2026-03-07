@@ -1,14 +1,12 @@
 import 'package:coda/core/domain/entity/track_entity.dart';
+import 'package:coda/features/track_detail/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
-enum LyricsType { original, translate, mix }
-
 class TrackLyricsBlock extends StatelessWidget {
-  const TrackLyricsBlock({super.key, required this.track, required this.type});
+  const TrackLyricsBlock({super.key, required this.track});
 
   final TrackEntity track;
-  final LyricsType type;
 
   @override
   Widget build(BuildContext context) {
@@ -30,46 +28,9 @@ class TrackLyricsBlock extends StatelessWidget {
             padding: EdgeInsets.all(20),
             sliver: SliverList.separated(
               itemBuilder: (BuildContext context, int index) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ...switch (type) {
-                      LyricsType.original => [
-                        Text(
-                          lyrics[index],
-                          style: theme.textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: theme.colorScheme.onSurface,
-                          ),
-                        ),
-                      ],
-                      LyricsType.translate => [
-                        Text(
-                          lyrics[index],
-                          style: theme.textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: theme.colorScheme.onSurface,
-                          ),
-                        ),
-                      ],
-                      LyricsType.mix => [
-                        Text(
-                          lyrics[index],
-                          style: theme.textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: theme.colorScheme.onSurface,
-                          ),
-                        ),
-                        Text(
-                          lyrics[index],
-                          style: theme.textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.w500,
-                            color: theme.colorScheme.onSurface.withOpacity(0.7),
-                          ),
-                        ),
-                      ],
-                    },
-                  ],
+                return TrackLyricsLine(
+                  originalLine: lyrics[index],
+                  translatedlLine: lyrics[index],
                 );
               },
               separatorBuilder: (BuildContext context, int index) {
@@ -83,3 +44,4 @@ class TrackLyricsBlock extends StatelessWidget {
     );
   }
 }
+

@@ -28,8 +28,8 @@ void main() async {
   sl.registerLazySingleton(
     () => Dio(
       BaseOptions(
-        connectTimeout: const Duration(seconds: 5), 
-        receiveTimeout: const Duration(seconds: 5),
+        connectTimeout: const Duration(seconds: 3),
+        receiveTimeout: const Duration(seconds: 3),
       ),
     ),
   );
