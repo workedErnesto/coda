@@ -4,6 +4,8 @@ import 'package:coda/features/track_detail/presentation/widgets/widgets.dart';
 
 import 'package:flutter/material.dart';
 
+enum Lyrics { original, translate, mix }
+
 @RoutePage()
 class TrackDetailScreen extends StatelessWidget {
   const TrackDetailScreen({super.key, required this.track});
@@ -14,18 +16,16 @@ class TrackDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: TrackDetailAppBar(),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(0),
-        child: Center(
-          child: Column(
-            children: [
-              TrackInfoBlock(track: track),
-              SizedBox(height: 20),
-              FavoriteButton(),
-            ],
-          ),
-        ),
+      body: CustomScrollView(
+        slivers: [
+          TrackDetailAppBar(track: track),
+          SliverToBoxAdapter(child: SizedBox(height: 20)),
+          SliverToBoxAdapter(child: FavoriteButton()),
+          SliverToBoxAdapter(child: SizedBox(height: 20)),
+          SliverToBoxAdapter(child: TrackSegmentedControl()),
+          SliverToBoxAdapter(child: SizedBox(height: 20)),
+          TrackLyricsBlock(track: track),
+        ],
       ),
     );
   }

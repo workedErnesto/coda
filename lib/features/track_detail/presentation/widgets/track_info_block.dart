@@ -10,14 +10,13 @@ class TrackInfoBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
-      color: Colors.red,
       width: double.infinity,
       padding: EdgeInsets.all(0),
       child: Column(
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(16),
-            child: Image.network(track.posterUrl, width: 250, height: 250),
+            child: Image.network(track.posterUrl, width: 300, height: 300),
           ),
           SizedBox(height: 20),
           Text(

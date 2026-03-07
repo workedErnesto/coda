@@ -27,6 +27,7 @@ class TracksRemoteDataSource {
     final Map<String, dynamic> data = response.data is String
         ? jsonDecode(response.data)
         : response.data;
+        
     final List hits = data['response']['hits'];
 
     var list = hits.map((hit) {
