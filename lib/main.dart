@@ -6,7 +6,10 @@ import 'package:coda/core/domain/repository/i_theme_repository.dart';
 import 'package:coda/core/domain/usecase/fetch_current_theme_use_case.dart';
 import 'package:coda/core/domain/usecase/save_theme_use_case.dart';
 import 'package:coda/core/presentation/cubit/theme_cubit.dart';
-import 'package:coda/features/search/data/datasources/tracks_remote_data_source.dart';
+import 'package:coda/features/search/data/datasources/genius_remote_data_source.dart';
+import 'package:coda/features/search/data/datasources/i_genius_remote_data_source.dart';
+import 'package:coda/features/search/data/datasources/i_lyrics_remote_data_source.dart';
+import 'package:coda/features/search/data/datasources/lyrics_remote_data_source.dart';
 import 'package:coda/features/search/data/repository/search_repository.dart';
 import 'package:coda/features/search/domain/repository/i_search_repository.dart';
 import 'package:coda/features/search/domain/usecase/fetch_popular_tracks_usecase.dart';
@@ -22,10 +25,20 @@ void main() async {
   final sl = GetIt.I;
   final prefs = await SharedPreferences.getInstance();
   sl.registerSingleton<SharedPreferences>(prefs);
-  sl.registerLazySingleton(() => Dio());
+  sl.registerLazySingleton(
+    () => Dio(
+      BaseOptions(
+        connectTimeout: const Duration(seconds: 5), 
+        receiveTimeout: const Duration(seconds: 5),
+      ),
+    ),
+  );
 
-  sl.registerLazySingleton<TracksRemoteDataSource>(
-    () => TracksRemoteDataSource(dio: sl()),
+  sl.registerLazySingleton<IGeniusRemoteDataSource>(
+    () => GeniusRemoteDataSource(dio: sl()),
+  );
+  sl.registerLazySingleton<ILyricsRemoteDataSource>(
+    () => LyricsRemoteDataSource(dio: sl()),
   );
   sl.registerLazySingleton<IThemeLocalDataSource>(
     () => ThemeLocalDataSource(prefs: prefs),
@@ -41,7 +54,8 @@ void main() async {
   );
 
   sl.registerLazySingleton<ISearchRepository>(
-    () => SearchRepository(remoteDataSource: sl()),
+    () =>
+        SearchRepository(remoteDataSource: sl(), lyricsRemoteDataSource: sl()),
   );
   sl.registerLazySingleton<FetchPopularTracksUseCase>(
     () => FetchPopularTracksUseCase(repository: sl()),

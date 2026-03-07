@@ -1,13 +1,16 @@
 import 'dart:convert';
 
+import 'package:coda/features/search/data/datasources/i_genius_remote_data_source.dart';
+
 import 'package:coda/features/search/data/model/track_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-class TracksRemoteDataSource {
-  TracksRemoteDataSource({required Dio dio}) : _dio = dio;
+class GeniusRemoteDataSource implements IGeniusRemoteDataSource {
+  GeniusRemoteDataSource({required Dio dio}) : _dio = dio;
   final Dio _dio;
 
+  @override
   Future<List<TrackModel>> fetchPopularTracks() async {
     await dotenv.load(fileName: ".env");
     final token = dotenv.env['GENIUS_CLIENT_TOKEN'];
@@ -27,12 +30,14 @@ class TracksRemoteDataSource {
     final Map<String, dynamic> data = response.data is String
         ? jsonDecode(response.data)
         : response.data;
-        
+
+
     final List hits = data['response']['hits'];
 
     var list = hits.map((hit) {
       return TrackModel.fromJson(hit['result']);
     }).toList();
+
 
     return list;
   }

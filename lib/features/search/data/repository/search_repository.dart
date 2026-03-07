@@ -1,17 +1,25 @@
 import 'package:coda/core/domain/entity/track_entity.dart';
-import 'package:coda/features/search/data/datasources/tracks_remote_data_source.dart';
+import 'package:coda/features/search/data/datasources/i_genius_remote_data_source.dart';
+import 'package:coda/features/search/data/datasources/i_lyrics_remote_data_source.dart';
 import 'package:coda/features/search/domain/repository/i_search_repository.dart';
+import 'package:flutter/widgets.dart';
 
 class SearchRepository implements ISearchRepository {
-  final TracksRemoteDataSource _remoteDataSource;
+  final IGeniusRemoteDataSource _remoteDataSource;
+  final ILyricsRemoteDataSource _lyricsRemoteDataSource;
 
-  SearchRepository({required TracksRemoteDataSource remoteDataSource})
-    : _remoteDataSource = remoteDataSource;
+  SearchRepository({
+    required IGeniusRemoteDataSource remoteDataSource,
+    required ILyricsRemoteDataSource lyricsRemoteDataSource,
+  }) : _lyricsRemoteDataSource = lyricsRemoteDataSource,
+       _remoteDataSource = remoteDataSource;
 
   @override
   Future<List<TrackEntity>> fetchPopularTracks() async {
-    final trackModels = await _remoteDataSource.fetchPopularTracks();
-    return trackModels.map((track) => track.toEntity()).toList();
+    final models = await _remoteDataSource.fetchPopularTracks();
+    final modelsWithLyrics = await _lyricsRemoteDataSource.fetchTracks(models);
+    debugPrint('Загружено треков: ${modelsWithLyrics.length}');
+    return modelsWithLyrics.map((model) => model.toEntity()).toList();
   }
 
   @override

@@ -14,7 +14,6 @@ class TrackDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -24,7 +23,7 @@ class TrackDetailScreen extends StatelessWidget {
           SliverToBoxAdapter(child: SizedBox(height: 20)),
           SliverToBoxAdapter(child: TrackSegmentedControl()),
           SliverToBoxAdapter(child: SizedBox(height: 20)),
-          TrackLyricsBlock(track: track),
+          TrackLyricsBlock(track: track, type: LyricsType.original),
         ],
       ),
     );

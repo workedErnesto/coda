@@ -11,6 +11,7 @@ TrackModel _$TrackModelFromJson(Map<String, dynamic> json) => TrackModel(
   title: json['title'] as String,
   author: json['primary_artist_names'] as String,
   posterUrl: json['song_art_image_url'] as String,
+  originalLyrics: json['plainLyrics'] as String?,
 );
 
 Map<String, dynamic> _$TrackModelToJson(TrackModel instance) =>
@@ -19,4 +20,5 @@ Map<String, dynamic> _$TrackModelToJson(TrackModel instance) =>
       'title': instance.title,
       'primary_artist_names': instance.author,
       'song_art_image_url': instance.posterUrl,
+      'plainLyrics': instance.originalLyrics,
     };
