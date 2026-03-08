@@ -9,16 +9,23 @@ import 'package:coda/core/presentation/cubit/theme_cubit.dart';
 import 'package:coda/features/search/data/datasources/genius_remote_data_source.dart';
 import 'package:coda/features/search/data/datasources/i_genius_remote_data_source.dart';
 import 'package:coda/features/search/data/datasources/i_lyrics_remote_data_source.dart';
+import 'package:coda/features/track_detail/data/datasources/i_translate_remote_data_source.dart';
 import 'package:coda/features/search/data/datasources/lyrics_remote_data_source.dart';
+import 'package:coda/features/track_detail/data/datasources/translate_remote_data_source.dart';
 import 'package:coda/features/search/data/repository/search_repository.dart';
 import 'package:coda/features/search/domain/repository/i_search_repository.dart';
 import 'package:coda/features/search/domain/usecase/fetch_popular_tracks_usecase.dart';
+import 'package:coda/features/track_detail/data/repository/track_detail_repository.dart';
+import 'package:coda/features/track_detail/domain/repository/i_track_detail_repository.dart';
+import 'package:coda/features/track_detail/domain/usecase/fetch_track_usecase.dart';
 import 'package:coda/features/search/presentation/bloc/search_bloc.dart';
+import 'package:coda/features/track_detail/presentation/bloc/track_detail_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:translator/translator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +41,8 @@ void main() async {
     ),
   );
 
+  sl.registerLazySingleton<GoogleTranslator>(() => GoogleTranslator());
+
   sl.registerLazySingleton<IGeniusRemoteDataSource>(
     () => GeniusRemoteDataSource(dio: sl()),
   );
@@ -42,6 +51,12 @@ void main() async {
   );
   sl.registerLazySingleton<IThemeLocalDataSource>(
     () => ThemeLocalDataSource(prefs: prefs),
+  );
+  sl.registerLazySingleton<ITranslateRemoteDataSource>(
+    () => TranslateRemoteDataSource(translator: sl()),
+  );
+  sl.registerLazySingleton<ITrackDetailRepository>(
+    () => TrackDetailRepository(translateRemoteDataSource: sl()),
   );
   sl.registerLazySingleton<IThemeRepository>(
     () => ThemeRepository(themeLocalDataSource: sl()),
@@ -52,14 +67,25 @@ void main() async {
   sl.registerLazySingleton<SaveThemeUseCase>(
     () => SaveThemeUseCase(repository: sl()),
   );
+  sl.registerLazySingleton<FetchTrackUseCase>(
+    () => FetchTrackUseCase(repository: sl()),
+  );
 
   sl.registerLazySingleton<ISearchRepository>(
-    () =>
-        SearchRepository(remoteDataSource: sl(), lyricsRemoteDataSource: sl()),
+    () => SearchRepository(
+      remoteDataSource: sl(),
+      lyricsRemoteDataSource: sl(),
+      translateRemoteDataSource: sl(),
+    ),
   );
   sl.registerLazySingleton<FetchPopularTracksUseCase>(
     () => FetchPopularTracksUseCase(repository: sl()),
   );
+
+  sl.registerFactory<TrackDetailBloc>(
+    () => TrackDetailBloc(fetchTrackUseCase: sl()),
+  );
+
   sl.registerFactory<SearchBloc>(
     () => SearchBloc(fetchPopularTracksUseCase: sl()),
   );

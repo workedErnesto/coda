@@ -31,14 +31,12 @@ class GeniusRemoteDataSource implements IGeniusRemoteDataSource {
         ? jsonDecode(response.data)
         : response.data;
 
-
     final List hits = data['response']['hits'];
 
     var list = hits.map((hit) {
       return TrackModel.fromJson(hit['result']);
     }).toList();
-
-
+    
     return list;
   }
 }

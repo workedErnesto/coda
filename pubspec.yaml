@@ -40,7 +40,7 @@ dependencies:
   shared_preferences: ^2.5.4
   custom_sliding_segmented_control: ^1.8.5
   sliver_tools: ^0.2.12
-
+  translator: ^0.1.7
 dev_dependencies:
   flutter_test:
     sdk: flutter

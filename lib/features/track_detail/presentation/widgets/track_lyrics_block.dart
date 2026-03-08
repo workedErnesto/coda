@@ -1,17 +1,28 @@
 import 'package:coda/core/domain/entity/track_entity.dart';
 import 'package:coda/features/track_detail/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
-class TrackLyricsBlock extends StatelessWidget {
+class TrackLyricsBlock extends StatefulWidget {
   const TrackLyricsBlock({super.key, required this.track});
 
   final TrackEntity track;
 
   @override
+  State<TrackLyricsBlock> createState() => _TrackLyricsBlockState();
+}
+
+class _TrackLyricsBlockState extends State<TrackLyricsBlock> {
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final List<String> lyrics = track.originalLyrics.split('\n');
+    final List<String> lyrics = widget.track.originalLyrics
+        .replaceAll('\n\n', '\n')
+        .split('\n');
+    final List<String> translatedLyrics = widget.track.translatedLyrics!.split(
+      "[BR]",
+    );
     return SliverPadding(
       padding: EdgeInsets.symmetric(horizontal: 20),
       sliver: SliverStack(
@@ -30,7 +41,7 @@ class TrackLyricsBlock extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 return TrackLyricsLine(
                   originalLine: lyrics[index],
-                  translatedlLine: lyrics[index],
+                  translatedlLine: translatedLyrics[index],
                 );
               },
               separatorBuilder: (BuildContext context, int index) {
@@ -44,4 +55,3 @@ class TrackLyricsBlock extends StatelessWidget {
     );
   }
 }
-
