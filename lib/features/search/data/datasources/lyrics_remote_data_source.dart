@@ -1,5 +1,5 @@
 import 'package:coda/features/search/data/datasources/i_lyrics_remote_data_source.dart';
-import 'package:coda/features/search/data/model/track_model.dart';
+import 'package:coda/core/data/model/track_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 

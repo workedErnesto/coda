@@ -1,7 +1,6 @@
 import 'package:coda/core/domain/entity/track_entity.dart';
 import 'package:coda/features/track_detail/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class TrackLyricsBlock extends StatefulWidget {
@@ -21,7 +20,7 @@ class _TrackLyricsBlockState extends State<TrackLyricsBlock> {
         .replaceAll('\n\n', '\n')
         .split('\n');
     final List<String> translatedLyrics = widget.track.translatedLyrics!.split(
-      "[BR]",
+      "\n",
     );
     return SliverPadding(
       padding: EdgeInsets.symmetric(horizontal: 20),
@@ -41,7 +40,7 @@ class _TrackLyricsBlockState extends State<TrackLyricsBlock> {
               itemBuilder: (BuildContext context, int index) {
                 return TrackLyricsLine(
                   originalLine: lyrics[index],
-                  translatedlLine: translatedLyrics[index],
+                  translatedlLine: index < translatedLyrics.length ? translatedLyrics[index] : "",
                 );
               },
               separatorBuilder: (BuildContext context, int index) {

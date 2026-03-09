@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:coda/features/search/data/datasources/i_genius_remote_data_source.dart';
 
-import 'package:coda/features/search/data/model/track_model.dart';
+import 'package:coda/core/data/model/track_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 

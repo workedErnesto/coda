@@ -13,16 +13,17 @@ class TranslateRemoteDataSource implements ITranslateRemoteDataSource {
   Future<String> translateLyrics(TrackEntity track) async {
     String result = track.originalLyrics;
     try {
-      String textWithMarkers = track.originalLyrics
-          .replaceAll('\n\n', '\n')
-          .replaceAll('\n', '[BR]');
+      List<String> lines = result.replaceAll('\n\n', '\n').split("\n");
+
+      String textWithMarkers = lines.join(" ___ ");
 
       var translation = await _translator.translate(
         textWithMarkers,
         from: 'en',
         to: 'ru',
       );
-      return translation.text;
+
+      return translation.text.replaceAll(" ___ ", '\n');
     } catch (e) {
       debugPrint("ошибка перевода: $e");
     }

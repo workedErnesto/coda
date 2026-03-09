@@ -1,6 +1,8 @@
 import 'package:coda/coda_app.dart';
 import 'package:coda/core/data/datasources/i_theme_local_data_source.dart';
 import 'package:coda/core/data/datasources/theme_local_data_source.dart';
+import 'package:coda/core/data/datasources/tracks_local_data_source.dart';
+import 'package:coda/core/data/i_tracks_local_data_source.dart';
 import 'package:coda/core/data/repository/theme_repository.dart';
 import 'package:coda/core/domain/repository/i_theme_repository.dart';
 import 'package:coda/core/domain/usecase/fetch_current_theme_use_case.dart';
@@ -9,6 +11,7 @@ import 'package:coda/core/presentation/cubit/theme_cubit.dart';
 import 'package:coda/features/search/data/datasources/genius_remote_data_source.dart';
 import 'package:coda/features/search/data/datasources/i_genius_remote_data_source.dart';
 import 'package:coda/features/search/data/datasources/i_lyrics_remote_data_source.dart';
+import 'package:coda/core/data/model/track_model.dart';
 import 'package:coda/features/track_detail/data/datasources/i_translate_remote_data_source.dart';
 import 'package:coda/features/search/data/datasources/lyrics_remote_data_source.dart';
 import 'package:coda/features/track_detail/data/datasources/translate_remote_data_source.dart';
@@ -24,6 +27,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:translator/translator.dart';
 
@@ -31,6 +35,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final sl = GetIt.I;
   final prefs = await SharedPreferences.getInstance();
+  await Hive.initFlutter();
+  Hive.registerAdapter(TrackModelAdapter());
+  final trackBox = await Hive.openBox<TrackModel>('track_box');
   sl.registerSingleton<SharedPreferences>(prefs);
   sl.registerLazySingleton(
     () => Dio(
@@ -42,6 +49,8 @@ void main() async {
   );
 
   sl.registerLazySingleton<GoogleTranslator>(() => GoogleTranslator());
+
+  sl.registerLazySingleton<ITracksLocalDataSource>(() => TracksLocalDataSource(trackBox: trackBox));
 
   sl.registerLazySingleton<IGeniusRemoteDataSource>(
     () => GeniusRemoteDataSource(dio: sl()),
@@ -56,7 +65,7 @@ void main() async {
     () => TranslateRemoteDataSource(translator: sl()),
   );
   sl.registerLazySingleton<ITrackDetailRepository>(
-    () => TrackDetailRepository(translateRemoteDataSource: sl()),
+    () => TrackDetailRepository(translateRemoteDataSource: sl(), tracksLocalDataSource: sl()),
   );
   sl.registerLazySingleton<IThemeRepository>(
     () => ThemeRepository(themeLocalDataSource: sl()),

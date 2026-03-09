@@ -18,41 +18,36 @@ version: 1.0.0+1
 
 environment:
   sdk: ^3.9.2
-
-# Dependencies specify other packages that your package needs in order to work.
-# To automatically upgrade your package dependencies to the latest versions
-# consider running `flutter pub upgrade --major-versions`. Alternatively,
-# dependencies can be manually updated by changing the version numbers below to
-# the latest version available on pub.dev. To see which dependencies have newer
-# versions available, run `flutter pub outdated`.
 dependencies:
+  auto_route: ^11.1.0
+  cupertino_icons: ^1.0.8
+  custom_sliding_segmented_control: ^1.8.5
+  dio: ^5.9.1
+  equatable: ^2.0.8
+  flutter_bloc: ^9.1.1
+  flutter_dotenv: ^6.0.0
+  get_it: ^9.2.1
+  hive_ce_flutter: ^2.3.4
+  json_annotation: ^4.9.0
+  shared_preferences: ^2.5.4
+  sliver_tools: ^0.2.12
+  translator: ^1.0.4
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.8
-  auto_route: ^11.1.0
-  get_it: ^9.2.1
-  dio: ^5.9.1
-  flutter_dotenv: ^6.0.0
-  equatable: ^2.0.8
-  json_annotation: ^4.11.0
-  flutter_bloc: ^9.1.1
-  shared_preferences: ^2.5.4
-  custom_sliding_segmented_control: ^1.8.5
-  sliver_tools: ^0.2.12
-  translator: ^0.1.7
 dev_dependencies:
+  auto_route_generator: ^10.5.0
+  build_runner: ^2.4.9
+  flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
-  
-  auto_route_generator: 10.5.0
-  flutter_lints: ^5.0.0
-  build_runner: ^2.11.1
-  json_serializable: ^6.13.0
+  json_serializable: ^6.8.0
+  hive_ce_generator: ^1.9.2
+
 
 flutter:
   uses-material-design: true
-  
+
   assets:
     - assets/
     - .env
