@@ -12,6 +12,7 @@ import 'package:coda/features/search/data/datasources/genius_remote_data_source.
 import 'package:coda/features/search/data/datasources/i_genius_remote_data_source.dart';
 import 'package:coda/features/search/data/datasources/i_lyrics_remote_data_source.dart';
 import 'package:coda/core/data/model/track_model.dart';
+import 'package:coda/features/search/domain/usecase/search_tracks_usecase.dart';
 import 'package:coda/features/track_detail/data/datasources/i_translate_remote_data_source.dart';
 import 'package:coda/features/search/data/datasources/lyrics_remote_data_source.dart';
 import 'package:coda/features/track_detail/data/datasources/translate_remote_data_source.dart';
@@ -50,7 +51,9 @@ void main() async {
 
   sl.registerLazySingleton<GoogleTranslator>(() => GoogleTranslator());
 
-  sl.registerLazySingleton<ITracksLocalDataSource>(() => TracksLocalDataSource(trackBox: trackBox));
+  sl.registerLazySingleton<ITracksLocalDataSource>(
+    () => TracksLocalDataSource(trackBox: trackBox),
+  );
 
   sl.registerLazySingleton<IGeniusRemoteDataSource>(
     () => GeniusRemoteDataSource(dio: sl()),
@@ -65,7 +68,10 @@ void main() async {
     () => TranslateRemoteDataSource(translator: sl()),
   );
   sl.registerLazySingleton<ITrackDetailRepository>(
-    () => TrackDetailRepository(translateRemoteDataSource: sl(), tracksLocalDataSource: sl()),
+    () => TrackDetailRepository(
+      translateRemoteDataSource: sl(),
+      tracksLocalDataSource: sl(),
+    ),
   );
   sl.registerLazySingleton<IThemeRepository>(
     () => ThemeRepository(themeLocalDataSource: sl()),
@@ -78,6 +84,10 @@ void main() async {
   );
   sl.registerLazySingleton<FetchTrackUseCase>(
     () => FetchTrackUseCase(repository: sl()),
+  );
+
+  sl.registerLazySingleton<SearchTracksUseCase>(
+    () => SearchTracksUseCase(repository: sl()),
   );
 
   sl.registerLazySingleton<ISearchRepository>(
@@ -96,7 +106,8 @@ void main() async {
   );
 
   sl.registerFactory<SearchBloc>(
-    () => SearchBloc(fetchPopularTracksUseCase: sl()),
+    () =>
+        SearchBloc(fetchPopularTracksUseCase: sl(), searchTracksUseCase: sl()),
   );
 
   sl.registerFactory<ThemeCubit>(

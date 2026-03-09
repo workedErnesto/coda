@@ -25,10 +25,16 @@ class SearchRepository implements ISearchRepository {
   }
 
   @override
-  Future<List<TrackEntity>> searchTracks(String query) async {
-    // final trackModels = await _remoteDataSource();
-    // return trackModels.map((track) => track.toEntity()).toList();
-    return [];
+  Future<List<TrackEntity>> searchTracks(String? query) async {
+    if (query == null) {
+      return fetchPopularTracks();
+    } else {
+      final models = await _remoteDataSource.searchTracks(query);
+      final modelsWithLyrics = await _lyricsRemoteDataSource.fetchTracks(
+        models,
+      );
+      return modelsWithLyrics.map((model) => model.toEntity()).toList();
+    }
   }
 
   @override

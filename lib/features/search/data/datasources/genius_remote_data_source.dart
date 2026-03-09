@@ -11,12 +11,18 @@ class GeniusRemoteDataSource implements IGeniusRemoteDataSource {
   final Dio _dio;
 
   @override
-  Future<List<TrackModel>> fetchPopularTracks() async {
+  Future<List<TrackModel>> fetchPopularTracks() async => await _request('a');
+
+  @override
+  Future<List<TrackModel>> searchTracks(String query) async =>
+      await _request(query);
+
+  Future<List<TrackModel>> _request(String query) async {
     await dotenv.load(fileName: ".env");
     final token = dotenv.env['GENIUS_CLIENT_TOKEN'];
     final response = await _dio.get(
       'https://api.genius.com/search',
-      queryParameters: {'q': 'a'},
+      queryParameters: {'q': query},
 
       options: Options(
         responseType: ResponseType.json,
@@ -36,7 +42,6 @@ class GeniusRemoteDataSource implements IGeniusRemoteDataSource {
     var list = hits.map((hit) {
       return TrackModel.fromJson(hit['result']);
     }).toList();
-    
     return list;
   }
 }
