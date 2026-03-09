@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:coda/core/widgets/base_app_bar.dart';
-import 'package:coda/core/widgets/track_list.dart';
+import 'package:coda/core/presentation/widgets/base_app_bar.dart';
+import 'package:coda/core/presentation/widgets/track_list.dart';
 import 'package:coda/features/favorite/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 

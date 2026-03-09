@@ -1,4 +1,4 @@
-import 'package:coda/core/widgets/widgets.dart';
+import 'package:coda/core/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class BlockTemplate extends StatelessWidget {

@@ -14,6 +14,26 @@ class TrackEntity {
     required this.posterUrl,
     required this.originalLyrics,
     this.translatedLyrics,
-    this.isFavorite
+    this.isFavorite,
   });
+
+  TrackEntity copyWith({
+    int? id,
+    String? title,
+    String? author,
+    String? posterUrl,
+    String? originalLyrics,
+    String? translatedLyrics,
+    bool? isFavorite,
+  }) {
+    return TrackEntity(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      author: author ?? this.author,
+      posterUrl: posterUrl ?? this.posterUrl,
+      originalLyrics: originalLyrics ?? this.originalLyrics,
+      translatedLyrics: translatedLyrics ?? this.translatedLyrics,
+      isFavorite: isFavorite ?? this.isFavorite,
+    );
+  }
 }

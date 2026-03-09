@@ -19,6 +19,7 @@ class TrackItem extends StatelessWidget {
             ),
             SizedBox(width: 16),
             Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -30,8 +31,10 @@ class TrackItem extends StatelessWidget {
                 ),
                 Text(
                   track.author,
+                  maxLines: 1,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w400,
+
                     color: theme.hintColor,
                     overflow: TextOverflow.ellipsis,
                   ),

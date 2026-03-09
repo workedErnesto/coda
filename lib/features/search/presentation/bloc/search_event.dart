@@ -8,3 +8,8 @@ sealed class SearchEvent extends Equatable {
 }
 
 class LoadPopularTracks extends SearchEvent {}
+
+class LoadSearchTracks extends SearchEvent {
+  const LoadSearchTracks({required this.query});
+  final String? query;
+}

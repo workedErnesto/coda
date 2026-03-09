@@ -1,5 +1,7 @@
-import 'package:coda/core/widgets/widgets.dart';
+import 'package:coda/core/presentation/widgets/widgets.dart';
+import 'package:coda/features/search/presentation/bloc/search_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SearchField extends StatelessWidget {
   const SearchField({super.key});
@@ -11,6 +13,8 @@ class SearchField extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 12),
       child: BaseContainer(
         child: TextField(
+          onChanged: (query) =>
+              context.read<SearchBloc>().add(LoadSearchTracks(query: query)),
           autocorrect: false,
           maxLength: 30,
           textAlignVertical: TextAlignVertical.center,
@@ -24,7 +28,7 @@ class SearchField extends StatelessWidget {
             counterText: '',
             fillColor: theme.colorScheme.onPrimary,
             filled: true,
-            hintText: 'Треки, тексты, артисты...',
+            hintText: 'Треки, артисты...',
             hintStyle: theme.textTheme.bodyLarge?.copyWith(
               color: theme.hintColor,
               fontWeight: FontWeight.w500,
