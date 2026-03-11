@@ -1,13 +1,22 @@
 import 'package:coda/coda_app.dart';
 import 'package:coda/core/data/datasources/i_theme_local_data_source.dart';
+import 'package:coda/core/data/datasources/i_tracks_local_data_source.dart';
 import 'package:coda/core/data/datasources/theme_local_data_source.dart';
 import 'package:coda/core/data/datasources/tracks_local_data_source.dart';
-import 'package:coda/core/data/i_tracks_local_data_source.dart';
 import 'package:coda/core/data/repository/theme_repository.dart';
 import 'package:coda/core/domain/repository/i_theme_repository.dart';
 import 'package:coda/core/domain/usecase/fetch_current_theme_use_case.dart';
 import 'package:coda/core/domain/usecase/save_theme_use_case.dart';
 import 'package:coda/core/presentation/cubit/theme_cubit.dart';
+import 'package:coda/features/favorite/data/datasources/i_local_favorite_tracks_datasource.dart';
+import 'package:coda/features/favorite/data/datasources/local_favorite_tracks_datasource.dart';
+import 'package:coda/features/favorite/data/repository/favorite_tracks_repository.dart';
+import 'package:coda/features/favorite/domain/repository/i_favorite_tracks_repository.dart';
+import 'package:coda/features/favorite/domain/usecase/delete_favorite_cache_use_case.dart';
+import 'package:coda/features/favorite/domain/usecase/delete_from_favorites_track_use_case.dart';
+import 'package:coda/features/favorite/domain/usecase/fetch_favorites_track_use_case.dart';
+import 'package:coda/features/favorite/domain/usecase/save_to_favorites_track_use_case.dart';
+import 'package:coda/features/favorite/presentation/bloc/favorite_bloc.dart';
 import 'package:coda/features/search/data/datasources/genius_remote_data_source.dart';
 import 'package:coda/features/search/data/datasources/i_genius_remote_data_source.dart';
 import 'package:coda/features/search/data/datasources/i_lyrics_remote_data_source.dart';
@@ -39,6 +48,8 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(TrackModelAdapter());
   final trackBox = await Hive.openBox<TrackModel>('track_box');
+  final favoriteBox = await Hive.openBox<TrackModel>('favorite_box');
+
   sl.registerSingleton<SharedPreferences>(prefs);
   sl.registerLazySingleton(
     () => Dio(
@@ -48,13 +59,10 @@ void main() async {
       ),
     ),
   );
-
   sl.registerLazySingleton<GoogleTranslator>(() => GoogleTranslator());
-
   sl.registerLazySingleton<ITracksLocalDataSource>(
     () => TracksLocalDataSource(trackBox: trackBox),
   );
-
   sl.registerLazySingleton<IGeniusRemoteDataSource>(
     () => GeniusRemoteDataSource(dio: sl()),
   );
@@ -66,6 +74,9 @@ void main() async {
   );
   sl.registerLazySingleton<ITranslateRemoteDataSource>(
     () => TranslateRemoteDataSource(translator: sl()),
+  );
+    sl.registerLazySingleton<ILocalFavoriteTracksDatasource>(
+    () => FavoriteTracksDatasource(favoriteBox: favoriteBox),
   );
   sl.registerLazySingleton<ITrackDetailRepository>(
     () => TrackDetailRepository(
@@ -85,11 +96,9 @@ void main() async {
   sl.registerLazySingleton<FetchTrackUseCase>(
     () => FetchTrackUseCase(repository: sl()),
   );
-
   sl.registerLazySingleton<SearchTracksUseCase>(
     () => SearchTracksUseCase(repository: sl()),
   );
-
   sl.registerLazySingleton<ISearchRepository>(
     () => SearchRepository(
       remoteDataSource: sl(),
@@ -100,20 +109,47 @@ void main() async {
   sl.registerLazySingleton<FetchPopularTracksUseCase>(
     () => FetchPopularTracksUseCase(repository: sl()),
   );
-
+  sl.registerLazySingleton<IFavoriteTracksRepository>(
+    () => FavoriteTracksRepository(favoriteTracksDatasource: sl()),
+  );
+  sl.registerLazySingleton<FetchFavoritesTrackUseCase>(
+    () => FetchFavoritesTrackUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton<DeleteFromFavoritesTrackUseCase>(
+    () => DeleteFromFavoritesTrackUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton<SaveToFavoritesTrackUseCase>(
+    () => SaveToFavoritesTrackUseCase(repository: sl()),
+  );
+    sl.registerLazySingleton<DeleteFavoriteCacheUseCase>(
+    () => DeleteFavoriteCacheUseCase(repository: sl()),
+  );
   sl.registerFactory<TrackDetailBloc>(
     () => TrackDetailBloc(fetchTrackUseCase: sl()),
   );
-
   sl.registerFactory<SearchBloc>(
     () =>
         SearchBloc(fetchPopularTracksUseCase: sl(), searchTracksUseCase: sl()),
   );
-
   sl.registerFactory<ThemeCubit>(
     () => ThemeCubit(fetchCurrentThemeUseCase: sl(), saveThemeUseCase: sl()),
   );
+  sl.registerFactory<FavoriteBloc>(
+    () => FavoriteBloc(
+      favoritesTrackUseCase: sl(),
+      deleteFromFavoritesTrackUseCase: sl(),
+      saveToFavoritesTrackUseCase: sl(),
+      deleteFavoriteCacheUseCase: sl()
+    ),
+  );
+
   runApp(
-    BlocProvider(create: (context) => sl<ThemeCubit>(), child: const CodaApp()),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => sl<ThemeCubit>()),
+        BlocProvider(create: (context) => sl<FavoriteBloc>()..add(LoadFavoritesTracks())),
+      ],
+      child: CodaApp(),
+    ),
   );
 }

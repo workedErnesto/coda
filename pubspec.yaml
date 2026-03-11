@@ -35,6 +35,7 @@ dependencies:
   flutter:
     sdk: flutter
   stream_transform: ^2.1.1
+  bounce_tapper: ^1.1.4
 
 dev_dependencies:
   auto_route_generator: ^10.5.0

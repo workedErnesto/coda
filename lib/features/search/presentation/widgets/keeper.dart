@@ -1,3 +1,4 @@
+import 'package:coda/core/presentation/widgets/error_block.dart';
 import 'package:coda/features/search/presentation/bloc/search_bloc.dart';
 import 'package:coda/features/search/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,6 @@ class Keeper extends StatefulWidget {
 }
 
 class _KeeperState extends State<Keeper> {
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SearchBloc, SearchState>(
@@ -25,8 +25,10 @@ class _KeeperState extends State<Keeper> {
           );
         }
         if (state is SearchFailure) {
-          return SliverToBoxAdapter(
-            child: Center(child: Container(child: Text(state.error))),
+            return ErrorBlock(
+              text: 'Не удалось\n загрузить треки :(',
+              onPressed: () =>
+                  context.read<SearchBloc>().add(LoadPopularTracks()),
           );
         }
         return SliverToBoxAdapter(child: Container(child: Text('errrroooor')));

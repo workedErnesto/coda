@@ -32,7 +32,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
     on<LoadSearchTracks> ( 
       _search,
-      transformer: debounce(Duration(milliseconds: 500))
+      transformer: debounce(Duration(milliseconds: 501))
     );
   }
 

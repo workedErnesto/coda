@@ -68,6 +68,7 @@ class TrackModel extends Equatable {
     String? author,
     String? posterUrl,
     String? originalLyrics,
+    bool? isFavorite,
   }) {
     return TrackModel(
       id: id ?? this.id,

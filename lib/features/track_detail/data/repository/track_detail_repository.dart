@@ -1,4 +1,4 @@
-import 'package:coda/core/data/i_tracks_local_data_source.dart';
+import 'package:coda/core/data/datasources/i_tracks_local_data_source.dart';
 import 'package:coda/core/data/model/track_model.dart';
 import 'package:coda/core/domain/entity/track_entity.dart';
 import 'package:coda/features/track_detail/data/datasources/i_translate_remote_data_source.dart';
