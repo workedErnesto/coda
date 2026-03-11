@@ -1,4 +1,5 @@
 import 'package:coda/features/favorite/presentation/bloc/favorite_bloc.dart';
+import 'package:coda/features/settings/presentation/cubit/settings_cubit.dart';
 import 'package:coda/features/settings/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,9 +10,7 @@ class StorageBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlockTemplate(
-      onTap: () {
-        context.read<FavoriteBloc>().add(DeleteAllFavoritesTracks());
-      },
+      onTap: () => context.read<SettingsCubit>().clearCache(),
       title: 'Память & данные',
       label: 'Очистить кэш',
       icon: Icons.delete_outline_rounded,

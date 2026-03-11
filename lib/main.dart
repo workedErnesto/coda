@@ -22,6 +22,7 @@ import 'package:coda/features/search/data/datasources/i_genius_remote_data_sourc
 import 'package:coda/features/search/data/datasources/i_lyrics_remote_data_source.dart';
 import 'package:coda/core/data/model/track_model.dart';
 import 'package:coda/features/search/domain/usecase/search_tracks_usecase.dart';
+import 'package:coda/features/settings/presentation/cubit/settings_cubit.dart';
 import 'package:coda/features/track_detail/data/datasources/i_translate_remote_data_source.dart';
 import 'package:coda/features/search/data/datasources/lyrics_remote_data_source.dart';
 import 'package:coda/features/track_detail/data/datasources/translate_remote_data_source.dart';
@@ -30,6 +31,7 @@ import 'package:coda/features/search/domain/repository/i_search_repository.dart'
 import 'package:coda/features/search/domain/usecase/fetch_popular_tracks_usecase.dart';
 import 'package:coda/features/track_detail/data/repository/track_detail_repository.dart';
 import 'package:coda/features/track_detail/domain/repository/i_track_detail_repository.dart';
+import 'package:coda/features/track_detail/domain/usecase/clear_cache_tracks_use_case.dart';
 import 'package:coda/features/track_detail/domain/usecase/fetch_track_usecase.dart';
 import 'package:coda/features/search/presentation/bloc/search_bloc.dart';
 import 'package:coda/features/track_detail/presentation/bloc/track_detail_bloc.dart';
@@ -75,7 +77,7 @@ void main() async {
   sl.registerLazySingleton<ITranslateRemoteDataSource>(
     () => TranslateRemoteDataSource(translator: sl()),
   );
-    sl.registerLazySingleton<ILocalFavoriteTracksDatasource>(
+  sl.registerLazySingleton<ILocalFavoriteTracksDatasource>(
     () => FavoriteTracksDatasource(favoriteBox: favoriteBox),
   );
   sl.registerLazySingleton<ITrackDetailRepository>(
@@ -121,11 +123,15 @@ void main() async {
   sl.registerLazySingleton<SaveToFavoritesTrackUseCase>(
     () => SaveToFavoritesTrackUseCase(repository: sl()),
   );
-    sl.registerLazySingleton<DeleteFavoriteCacheUseCase>(
+  sl.registerLazySingleton<DeleteFavoriteCacheUseCase>(
     () => DeleteFavoriteCacheUseCase(repository: sl()),
   );
+  sl.registerLazySingleton<ClearCacheTracksUseCase>(
+    () => ClearCacheTracksUseCase(repository: sl()),
+  );
   sl.registerFactory<TrackDetailBloc>(
-    () => TrackDetailBloc(fetchTrackUseCase: sl()),
+    () =>
+        TrackDetailBloc(fetchTrackUseCase: sl(), clearCacheTracksUseCase: sl()),
   );
   sl.registerFactory<SearchBloc>(
     () =>
@@ -139,7 +145,7 @@ void main() async {
       favoritesTrackUseCase: sl(),
       deleteFromFavoritesTrackUseCase: sl(),
       saveToFavoritesTrackUseCase: sl(),
-      deleteFavoriteCacheUseCase: sl()
+      deleteFavoriteCacheUseCase: sl(),
     ),
   );
 
@@ -147,7 +153,10 @@ void main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => sl<ThemeCubit>()),
-        BlocProvider(create: (context) => sl<FavoriteBloc>()..add(LoadFavoritesTracks())),
+        BlocProvider(
+          create: (context) => sl<FavoriteBloc>()..add(LoadFavoritesTracks()),
+        ),
+        BlocProvider(create: (context) => SettingsCubit()),
       ],
       child: CodaApp(),
     ),

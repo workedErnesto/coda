@@ -11,3 +11,5 @@ final class LoadTrackDetail extends TrackDetailEvent {
     const LoadTrackDetail({required this.track});
   final TrackEntity track;
 }
+
+final class DeleteCacheTrackDetail extends TrackDetailEvent {}
