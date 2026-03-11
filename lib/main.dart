@@ -1,13 +1,17 @@
 import 'package:coda/coda_app.dart';
 import 'package:coda/core/data/datasources/i_theme_local_data_source.dart';
+import 'package:coda/core/data/datasources/i_tracks_local_data_source.dart';
 import 'package:coda/core/data/datasources/theme_local_data_source.dart';
 import 'package:coda/core/data/datasources/tracks_local_data_source.dart';
-import 'package:coda/core/data/i_tracks_local_data_source.dart';
 import 'package:coda/core/data/repository/theme_repository.dart';
 import 'package:coda/core/domain/repository/i_theme_repository.dart';
 import 'package:coda/core/domain/usecase/fetch_current_theme_use_case.dart';
 import 'package:coda/core/domain/usecase/save_theme_use_case.dart';
 import 'package:coda/core/presentation/cubit/theme_cubit.dart';
+import 'package:coda/features/favorite/data/repository/favorite_tracks_repository.dart';
+import 'package:coda/features/favorite/domain/repository/i_favorite_tracks_repository.dart';
+import 'package:coda/features/favorite/domain/usecase/fetch_favorites_track_use_case.dart';
+import 'package:coda/features/favorite/presentation/bloc/favorite_bloc.dart';
 import 'package:coda/features/search/data/datasources/genius_remote_data_source.dart';
 import 'package:coda/features/search/data/datasources/i_genius_remote_data_source.dart';
 import 'package:coda/features/search/data/datasources/i_lyrics_remote_data_source.dart';
@@ -48,13 +52,10 @@ void main() async {
       ),
     ),
   );
-
   sl.registerLazySingleton<GoogleTranslator>(() => GoogleTranslator());
-
   sl.registerLazySingleton<ITracksLocalDataSource>(
     () => TracksLocalDataSource(trackBox: trackBox),
   );
-
   sl.registerLazySingleton<IGeniusRemoteDataSource>(
     () => GeniusRemoteDataSource(dio: sl()),
   );
@@ -85,11 +86,9 @@ void main() async {
   sl.registerLazySingleton<FetchTrackUseCase>(
     () => FetchTrackUseCase(repository: sl()),
   );
-
   sl.registerLazySingleton<SearchTracksUseCase>(
     () => SearchTracksUseCase(repository: sl()),
   );
-
   sl.registerLazySingleton<ISearchRepository>(
     () => SearchRepository(
       remoteDataSource: sl(),
@@ -100,19 +99,26 @@ void main() async {
   sl.registerLazySingleton<FetchPopularTracksUseCase>(
     () => FetchPopularTracksUseCase(repository: sl()),
   );
-
+  sl.registerLazySingleton<IFavoriteTracksRepository>(
+    () => FavoriteTracksRepository(tracksLocalDataSource: sl()),
+  );
+  sl.registerLazySingleton<FetchFavoritesTrackUseCase>(
+    () => FetchFavoritesTrackUseCase(repository: sl()),
+  );
   sl.registerFactory<TrackDetailBloc>(
     () => TrackDetailBloc(fetchTrackUseCase: sl()),
   );
-
   sl.registerFactory<SearchBloc>(
     () =>
         SearchBloc(fetchPopularTracksUseCase: sl(), searchTracksUseCase: sl()),
   );
-
   sl.registerFactory<ThemeCubit>(
     () => ThemeCubit(fetchCurrentThemeUseCase: sl(), saveThemeUseCase: sl()),
   );
+  sl.registerFactory<FavoriteBloc>(
+    () => FavoriteBloc(favoritesTrackUseCase: sl()),
+  );
+
   runApp(
     BlocProvider(create: (context) => sl<ThemeCubit>(), child: const CodaApp()),
   );

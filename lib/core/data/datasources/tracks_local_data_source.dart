@@ -1,4 +1,4 @@
-import 'package:coda/core/data/i_tracks_local_data_source.dart';
+import 'package:coda/core/data/datasources/i_tracks_local_data_source.dart';
 import 'package:coda/core/data/model/track_model.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 
