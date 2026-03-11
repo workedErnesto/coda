@@ -1,3 +1,4 @@
+import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:coda/core/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -7,13 +8,14 @@ class BlockTemplate extends StatelessWidget {
     required this.title,
     required this.label,
     required this.icon,
-    required this.action,
+    required this.action, required this.onTap,
   });
 
   final String title;
   final String label;
   final IconData icon;
   final Widget action;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -34,49 +36,53 @@ class BlockTemplate extends StatelessWidget {
             ),
           ),
           SizedBox(height: 4),
-          BaseContainer(
-            child: OutlinedButton(
-              onPressed: () {},
-              style: OutlinedButton.styleFrom(
-                elevation: 0,
-                side: isDark
-                    ? BorderSide.none
-                    : BorderSide(color: theme.hintColor.withOpacity(0.15)),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: EdgeInsets.all(16),
-                backgroundColor: theme.colorScheme.onPrimary,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.secondary,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        padding: EdgeInsets.all(12),
-                        child: Icon(
-                          icon,
-                          size: 24,
-                          color: theme.colorScheme.onSecondary,
-                        ),
-                      ),
-                      SizedBox(width: 16),
-                      Text(
-                        label,
-                        style: theme.textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w500,
-                          color: theme.colorScheme.onSurface,
-                        ),
-                      ),
-                    ],
+          BounceTapper(
+            onTap: onTap,
+            child: BaseContainer(
+              child: OutlinedButton(
+                onPressed: () {},
+                style: OutlinedButton.styleFrom(
+                  splashFactory: NoSplash.splashFactory,
+                  elevation: 0,
+                  side: isDark
+                      ? BorderSide.none
+                      : BorderSide(color: theme.hintColor.withOpacity(0.15)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  action,
-                ],
+                  padding: EdgeInsets.all(16),
+                  backgroundColor: theme.colorScheme.onPrimary,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.secondary,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: EdgeInsets.all(12),
+                          child: Icon(
+                            icon,
+                            size: 24,
+                            color: theme.colorScheme.onSecondary,
+                          ),
+                        ),
+                        SizedBox(width: 16),
+                        Text(
+                          label,
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: theme.colorScheme.onSurface,
+                          ),
+                        ),
+                      ],
+                    ),
+                    action,
+                  ],
+                ),
               ),
             ),
           ),

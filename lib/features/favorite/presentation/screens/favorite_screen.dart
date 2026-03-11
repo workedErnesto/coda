@@ -6,7 +6,6 @@ import 'package:coda/core/presentation/widgets/error_block.dart';
 import 'package:coda/features/favorite/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
 @RoutePage()
 class FavoriteScreen extends StatefulWidget {
@@ -17,19 +16,21 @@ class FavoriteScreen extends StatefulWidget {
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
-  final _bloc = GetIt.I<FavoriteBloc>();
-
   @override
   void initState() {
     super.initState();
-    _bloc.add(LoadFavoritesTracks());
+    context.read<FavoriteBloc>().add(LoadFavoritesTracks());
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FavoriteBloc, FavoriteState>(
-      bloc: _bloc,
       builder: (context, state) {
+        if (state is FavoriteLoaded) {
+          debugPrint(
+            "FavoriteScreen REBUILT: tracks count = ${state.tracks.length}",
+          );
+        }
         return Scaffold(
           body: Padding(
             padding: const EdgeInsets.symmetric(

@@ -41,7 +41,7 @@ class TrackDetailScreen extends StatelessWidget {
                 
                 if (state is TrackDetailLoaded) ...[
                     SliverToBoxAdapter(child: SizedBox(height: 20)),
-                    SliverToBoxAdapter(child: FavoriteButton()),
+                    SliverToBoxAdapter(child: FavoriteButton(track: track,)),
                     SliverToBoxAdapter(child: SizedBox(height: 20)),
                     SliverToBoxAdapter(child: TrackSegmentedControl()),
                     SliverToBoxAdapter(child: SizedBox(height: 20)),

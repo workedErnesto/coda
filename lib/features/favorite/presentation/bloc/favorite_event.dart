@@ -8,3 +8,12 @@ sealed class FavoriteEvent extends Equatable {
 }
 
 class LoadFavoritesTracks extends FavoriteEvent {}
+
+class ToogleFavorite extends FavoriteEvent {
+  const ToogleFavorite({required this.track});
+
+  final TrackEntity track;
+}
+
+class DeleteAllFavoritesTracks extends FavoriteEvent {}
+ 

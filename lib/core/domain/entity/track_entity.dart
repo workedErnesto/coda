@@ -5,7 +5,6 @@ class TrackEntity {
   final String posterUrl;
   final String originalLyrics;
   final String? translatedLyrics;
-  bool? isFavorite = false;
 
   TrackEntity({
     required this.id,
@@ -14,7 +13,6 @@ class TrackEntity {
     required this.posterUrl,
     required this.originalLyrics,
     this.translatedLyrics,
-    this.isFavorite,
   });
 
   TrackEntity copyWith({
@@ -33,7 +31,6 @@ class TrackEntity {
       posterUrl: posterUrl ?? this.posterUrl,
       originalLyrics: originalLyrics ?? this.originalLyrics,
       translatedLyrics: translatedLyrics ?? this.translatedLyrics,
-      isFavorite: isFavorite ?? this.isFavorite,
     );
   }
 }

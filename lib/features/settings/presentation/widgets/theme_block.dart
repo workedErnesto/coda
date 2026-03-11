@@ -10,16 +10,18 @@ class ThemeBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    void onTap(bool value) => context.read<ThemeCubit>().toogleTheme(value);
     return BlocBuilder<ThemeCubit, ThemeState>(
       builder: (context, state) {
         bool isDark = state is ThemeDark;
         return BlockTemplate(
+          onTap: () => onTap,
           title: 'Внешний вид',
           label: "Темная тема",
           icon: Icons.wb_sunny_outlined,
           action: CupertinoSwitch(
             value: isDark,
-            onChanged: (value) => context.read<ThemeCubit>().toogleTheme(value),
+            onChanged: (value) => onTap(value),
             trackOutlineWidth: WidgetStatePropertyAll(0),
             trackOutlineColor: WidgetStatePropertyAll(
               theme.disabledColor.withOpacity(0.2),
