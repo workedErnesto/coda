@@ -33,4 +33,7 @@ class TrackDetailRepository implements ITrackDetailRepository {
   @override
   Future<void> saveTrack(TrackEntity track) async =>
       await _tracksLocalDataSource.saveTrack(TrackModel.fromEntity(track));
+
+  @override
+  Future<void> deleteCache() async => _tracksLocalDataSource.deleteCache();
 }
