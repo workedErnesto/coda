@@ -3,12 +3,23 @@ import 'package:coda/core/data/model/track_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
-class LyricsRemoteDataSource implements ILyricsRemoteDataSource {
-  LyricsRemoteDataSource({required Dio dio}) : _dio = dio;
+class LyricsDataSource implements ILyricsRemoteDataSource {
+  LyricsDataSource({required Dio dio}) : _dio = dio;
   final Dio _dio;
   @override
   Future<List<TrackModel>> fetchTracks(List<TrackModel> tracks) async {
-    final List<TrackModel> results = await Future.wait(
+    final List<TrackModel> results = await _request(tracks);
+    return results.where((track) => track.originalLyrics != null).toList();
+  }
+
+  @override
+  Future<TrackModel>? translateTrack(TrackModel track) async {
+    final tracks = await _request([track]);
+    return tracks.first;
+  }
+
+  Future<List<TrackModel>> _request(List<TrackModel> tracks) {
+    return Future.wait(
       tracks.map((t) async {
         try {
           final result = await _dio.get(
@@ -18,8 +29,11 @@ class LyricsRemoteDataSource implements ILyricsRemoteDataSource {
 
           if (result.statusCode == 200) {
             final trackData = result.data[0];
-            final lyrics = trackData['plainLyrics'];
-            return t.copyWith(originalLyrics: lyrics);
+            final String lyrics = trackData['plainLyrics'];
+            debugPrint(lyrics.isNotEmpty.toString());
+            if (lyrics.isNotEmpty) {
+              return t.copyWith(originalLyrics: lyrics);
+            }
           }
         } catch (e) {
           debugPrint('ошибка на треке ${t.title}: $e');
@@ -27,6 +41,5 @@ class LyricsRemoteDataSource implements ILyricsRemoteDataSource {
         return t;
       }),
     );
-    return results.where((track) => track.originalLyrics != null).toList();
   }
 }

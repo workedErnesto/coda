@@ -17,10 +17,10 @@ import 'package:coda/features/favorite/domain/usecase/delete_from_favorites_trac
 import 'package:coda/features/favorite/domain/usecase/fetch_favorites_track_use_case.dart';
 import 'package:coda/features/favorite/domain/usecase/save_to_favorites_track_use_case.dart';
 import 'package:coda/features/favorite/presentation/bloc/favorite_bloc.dart';
-import 'package:coda/features/search/data/datasources/genius_remote_data_source.dart';
-import 'package:coda/features/search/data/datasources/i_genius_remote_data_source.dart';
+import 'package:coda/features/search/data/datasources/genius_data_source.dart';
 import 'package:coda/features/search/data/datasources/i_lyrics_remote_data_source.dart';
 import 'package:coda/core/data/model/track_model.dart';
+import 'package:coda/features/search/data/datasources/i_search_remote_data_source.dart';
 import 'package:coda/features/search/domain/usecase/search_tracks_usecase.dart';
 import 'package:coda/features/settings/presentation/cubit/settings_cubit.dart';
 import 'package:coda/features/track_detail/data/datasources/i_translate_remote_data_source.dart';
@@ -65,11 +65,11 @@ void main() async {
   sl.registerLazySingleton<ITracksLocalDataSource>(
     () => TracksLocalDataSource(trackBox: trackBox),
   );
-  sl.registerLazySingleton<IGeniusRemoteDataSource>(
-    () => GeniusRemoteDataSource(dio: sl()),
+  sl.registerLazySingleton<ISearchRemoteDataSource>(
+    () => GeniusDataSource(dio: sl()),
   );
   sl.registerLazySingleton<ILyricsRemoteDataSource>(
-    () => LyricsRemoteDataSource(dio: sl()),
+    () => LyricsDataSource(dio: sl()),
   );
   sl.registerLazySingleton<IThemeLocalDataSource>(
     () => ThemeLocalDataSource(prefs: prefs),
@@ -103,9 +103,10 @@ void main() async {
   );
   sl.registerLazySingleton<ISearchRepository>(
     () => SearchRepository(
-      remoteDataSource: sl(),
       lyricsRemoteDataSource: sl(),
       translateRemoteDataSource: sl(),
+      tracksLocalDataSource: sl(),
+      searchRemoteDataSource: sl(),
     ),
   );
   sl.registerLazySingleton<FetchPopularTracksUseCase>(
@@ -129,18 +130,18 @@ void main() async {
   sl.registerLazySingleton<ClearCacheTracksUseCase>(
     () => ClearCacheTracksUseCase(repository: sl()),
   );
-  sl.registerFactory<TrackDetailBloc>(
+  sl.registerLazySingleton<TrackDetailBloc>(
     () =>
         TrackDetailBloc(fetchTrackUseCase: sl(), clearCacheTracksUseCase: sl()),
   );
-  sl.registerFactory<SearchBloc>(
+  sl.registerLazySingleton<SearchBloc>(
     () =>
         SearchBloc(fetchPopularTracksUseCase: sl(), searchTracksUseCase: sl()),
   );
-  sl.registerFactory<ThemeCubit>(
+  sl.registerLazySingleton<ThemeCubit>(
     () => ThemeCubit(fetchCurrentThemeUseCase: sl(), saveThemeUseCase: sl()),
   );
-  sl.registerFactory<FavoriteBloc>(
+  sl.registerLazySingleton<FavoriteBloc>(
     () => FavoriteBloc(
       favoritesTrackUseCase: sl(),
       deleteFromFavoritesTrackUseCase: sl(),
