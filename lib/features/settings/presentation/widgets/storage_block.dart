@@ -1,4 +1,3 @@
-import 'package:coda/features/favorite/presentation/bloc/favorite_bloc.dart';
 import 'package:coda/features/settings/presentation/cubit/settings_cubit.dart';
 import 'package:coda/features/settings/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';

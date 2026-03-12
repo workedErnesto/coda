@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:coda/features/search/data/datasources/i_genius_remote_data_source.dart';
+import 'package:coda/features/search/data/datasources/i_search_remote_data_source.dart';
 
 import 'package:coda/core/data/model/track_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-class GeniusRemoteDataSource implements IGeniusRemoteDataSource {
-  GeniusRemoteDataSource({required Dio dio}) : _dio = dio;
+class GeniusDataSource implements ISearchRemoteDataSource {
+  GeniusDataSource({required Dio dio}) : _dio = dio;
   final Dio _dio;
 
   @override

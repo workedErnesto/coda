@@ -26,11 +26,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<FavoriteBloc, FavoriteState>(
       builder: (context, state) {
-        if (state is FavoriteLoaded) {
-          debugPrint(
-            "FavoriteScreen REBUILT: tracks count = ${state.tracks.length}",
-          );
-        }
         return Scaffold(
           body: Padding(
             padding: const EdgeInsets.symmetric(
