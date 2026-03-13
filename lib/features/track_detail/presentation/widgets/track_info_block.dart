@@ -24,6 +24,7 @@ class TrackInfoBlock extends StatelessWidget {
             style: theme.textTheme.titleLarge?.copyWith(
               fontSize: 32,
               fontWeight: FontWeight.w600,
+              color: Colors.white,
             ),
           ),
           Text(

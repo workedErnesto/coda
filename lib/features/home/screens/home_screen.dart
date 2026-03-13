@@ -19,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context, child) {
         final tabsRouter = AutoTabsRouter.of(context);
         return Scaffold(
+          extendBody: true,
           body: child,
           bottomNavigationBar: CustomNavigationBar(
             activeIndex: tabsRouter.activeIndex,

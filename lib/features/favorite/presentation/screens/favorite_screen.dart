@@ -26,12 +26,16 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<FavoriteBloc, FavoriteState>(
       builder: (context, state) {
+        final bool isEmpty = state is FavoriteLoaded && state.isEmptyTracks;
         return Scaffold(
           body: Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 16.0,
             ).copyWith(bottom: 16),
             child: CustomScrollView(
+              physics: isEmpty
+                  ? const NeverScrollableScrollPhysics()
+                  : const BouncingScrollPhysics(),
               slivers: [
                 BaseAppBar(title: "Избранное"),
                 if (state is FavoriteLoading)

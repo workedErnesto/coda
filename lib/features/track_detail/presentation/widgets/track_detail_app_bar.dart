@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:auto_route/auto_route.dart';
+import 'package:coda/core/constants/colors.dart';
 import 'package:coda/core/domain/entity/track_entity.dart';
 import 'package:coda/features/track_detail/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -45,10 +46,9 @@ class TrackDetailAppBar extends StatelessWidget {
                       end: Alignment.bottomCenter,
                       colors: [
                         Colors.black.withOpacity(0.5),
-                        // theme.scaffoldBackgroundColor.withOpacity(0.5),
-                        theme.scaffoldBackgroundColor,
+                        darkScaffoldColor,
                       ],
-                      stops: [0.8, 1],
+                      stops: [0.7, 1],
                     ),
                   ),
                 ),

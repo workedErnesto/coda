@@ -13,32 +13,39 @@ class TrackList extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    return SliverList.separated(
-      itemCount: trackList.length,
-      itemBuilder: (context, index) {
-        return BaseContainer(
-          child: OutlinedButton(
-            onPressed: () =>
-                context.router.push(TrackDetailRoute(track: trackList[index])),
-            style: OutlinedButton.styleFrom(
-              elevation: 1,
-              side: isDark
-                  ? BorderSide.none
-                  : BorderSide(color: theme.hintColor.withOpacity(0.15)),
-              padding: EdgeInsets.zero.copyWith(left: 12, right: 2),
-              minimumSize: Size.fromHeight(88),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+    return SliverMainAxisGroup(
+      slivers: [
+        SliverList.separated(
+          itemCount: trackList.length,
+          itemBuilder: (context, index) {
+            return BaseContainer(
+              child: OutlinedButton(
+                onPressed: () => context.router.push(
+                  TrackDetailRoute(track: trackList[index]),
+                ),
+                style: OutlinedButton.styleFrom(
+                  elevation: 1,
+                  side: isDark
+                      ? BorderSide.none
+                      : BorderSide(color: theme.hintColor.withOpacity(0.15)),
+                  padding: EdgeInsets.zero.copyWith(left: 12, right: 2),
+                  minimumSize: Size.fromHeight(88),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  backgroundColor: theme.colorScheme.onPrimary,
+                ),
+                child: TrackItem(track: trackList[index]),
               ),
-              backgroundColor: theme.colorScheme.onPrimary,
-            ),
-            child: TrackItem(track: trackList[index]),
-          ),
-        );
-      },
-      separatorBuilder: (context, index) {
-        return SizedBox(height: 12);
-      },
+            );
+          },
+          separatorBuilder: (context, index) {
+            return SizedBox(height: 12);
+          },
+        ),
+        SliverToBoxAdapter(child: SizedBox(height: bottomPadding)),
+      ],
     );
   }
 }
