@@ -130,7 +130,7 @@ void main() async {
   sl.registerLazySingleton<ClearCacheTracksUseCase>(
     () => ClearCacheTracksUseCase(repository: sl()),
   );
-  sl.registerLazySingleton<TrackDetailBloc>(
+  sl.registerFactory<TrackDetailBloc>(
     () =>
         TrackDetailBloc(fetchTrackUseCase: sl(), clearCacheTracksUseCase: sl()),
   );
@@ -149,6 +149,11 @@ void main() async {
       deleteFavoriteCacheUseCase: sl(),
     ),
   );
+
+  FlutterError.onError = (details) {
+    FlutterError.presentError(details);
+    debugPrint('GLOBAL ERROR: ${details.exception}');
+  };
 
   runApp(
     MultiBlocProvider(

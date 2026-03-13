@@ -21,14 +21,14 @@ class NavigationBarItem extends StatelessWidget {
     final theme = Theme.of(context);
     final activeColor = theme.colorScheme.primary;
     final hintColor = theme.hintColor;
-    
     return Expanded(
       child: InkWell(
         onTap: () => onPressed(index),
-        child: Container(
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 300),
           decoration: BoxDecoration(
             color: activeColor.withOpacity(isActive ? 0.20 : 0),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
           ),
           padding: EdgeInsets.symmetric(vertical: 8),
           child: Column(
